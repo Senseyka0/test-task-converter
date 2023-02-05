@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Box, SelectChangeEvent } from "@mui/material";
 
 import { CurrencyItem } from "./components/CurrencyItem";
@@ -61,14 +61,14 @@ const App = () => {
 		}
 	}, [fromCurrency, toCurrency]);
 
-	const handleFromAmountChange = (e: any) => {
-		setAmount(e.target.value);
+	const handleFromAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setAmount(Number(e.target.value));
 
 		setAmountInFromCurrency(true);
 	};
 
-	const handleToAmountChange = (e: any) => {
-		setAmount(e.target.value);
+	const handleToAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setAmount(Number(e.target.value));
 
 		setAmountInFromCurrency(false);
 	};
