@@ -63,15 +63,13 @@ const App = () => {
 	}, [fromCurrency, toCurrency]);
 
 	const handleFromAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-		// @ts-ignore
-		setAmount(e.target.value);
+		setAmount(Number(e.target.value));
 
 		setAmountInFromCurrency(true);
 	};
 
 	const handleToAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-		// @ts-ignore
-		setAmount(e.target.value);
+		setAmount(Number(e.target.value));
 
 		setAmountInFromCurrency(false);
 	};
@@ -99,6 +97,7 @@ const App = () => {
 						{error}
 					</Typography>
 				)}
+
 				<CurrencyItem
 					selectedCurrency={fromCurrency}
 					onChangeCurrency={handleFromCurrencyChange}

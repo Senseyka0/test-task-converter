@@ -21,7 +21,7 @@ export const CurrencyItem = memo((props: CurrencyItemProps) => {
 			<TextField
 				sx={{ width: "48%" }}
 				value={amount}
-				type="number"
+				type="text"
 				onChange={onChangeAmount}
 				label="Input"
 				variant="outlined"
