@@ -1,5 +1,4 @@
 import { memo, useEffect, useState } from "react";
-
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,14 +15,15 @@ export const Header = memo(() => {
 			try {
 				const eur = await getCurrencies("EUR", "UAH");
 				const usd = await getCurrencies("USD", "UAH");
+
 				setEur(Object.values(eur.rates)[0]);
 				setUsd(Object.values(usd.rates)[0]);
 			} catch (e) {
 				console.error(e);
 			}
 		};
+
 		fetchData();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -41,6 +41,7 @@ export const Header = memo(() => {
 						<Typography variant="h6" component="div">
 							React Convertor
 						</Typography>
+
 						<Typography variant="h6" component="div">
 							<Box>Euro: {eur.toFixed(2)}</Box>
 							Dollar: {usd.toFixed(2)}

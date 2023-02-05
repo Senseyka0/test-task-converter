@@ -1,11 +1,11 @@
-import "./App.css";
-
 import { useEffect, useState } from "react";
+import { Box, SelectChangeEvent } from "@mui/material";
+
 import { CurrencyItem } from "./components/CurrencyItem";
 import { getCurrencies } from "./api/exchanges";
-
-import { Box, SelectChangeEvent } from "@mui/material";
 import { Header } from "./components/Header";
+
+import "./App.css";
 
 const App = () => {
 	const [fromCurrency, setFromCurrency] = useState<string>("EUR");
@@ -19,9 +19,11 @@ const App = () => {
 
 	if (amountInFromCurrency) {
 		fromAmount = amount;
+
 		toAmount = amount * exchangeRate;
 	} else {
 		toAmount = amount;
+
 		fromAmount = amount / exchangeRate;
 	}
 
@@ -29,7 +31,9 @@ const App = () => {
 		const fetchData = async () => {
 			try {
 				const data = await getCurrencies();
+
 				const uah = Object.keys(data.rates)[148];
+
 				setFromCurrency(data.base);
 				setToCurrency(uah);
 				setExchangeRate(data.rates[uah]);
@@ -37,30 +41,35 @@ const App = () => {
 				console.error(e);
 			}
 		};
+
 		fetchData();
 	}, []);
 
 	useEffect(() => {
-		if (fromCurrency != null && toCurrency != null) {
+		if (fromCurrency !== null && toCurrency !== null) {
 			const fetchData = async () => {
 				try {
 					const data = await getCurrencies(fromCurrency, toCurrency);
+
 					setExchangeRate(data.rates[toCurrency]);
 				} catch (e) {
 					console.error(e);
 				}
 			};
+
 			fetchData();
 		}
 	}, [fromCurrency, toCurrency]);
 
 	const handleFromAmountChange = (e: any) => {
 		setAmount(e.target.value);
+
 		setAmountInFromCurrency(true);
 	};
 
 	const handleToAmountChange = (e: any) => {
 		setAmount(e.target.value);
+
 		setAmountInFromCurrency(false);
 	};
 
@@ -84,14 +93,13 @@ const App = () => {
 				<CurrencyItem
 					selectedCurrency={fromCurrency}
 					onChangeCurrency={handleFromCurrencyChange}
-					// @ts-ignore
 					onChangeAmount={handleFromAmountChange}
 					amount={fromAmount}
 				/>
+
 				<CurrencyItem
 					selectedCurrency={toCurrency}
 					onChangeCurrency={handleToCurrencyChange}
-					// @ts-ignore
 					onChangeAmount={handleToAmountChange}
 					amount={toAmount}
 				/>
