@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Box, SelectChangeEvent } from "@mui/material";
+import { Box, SelectChangeEvent, Typography } from "@mui/material";
 
 import { CurrencyItem } from "./components/CurrencyItem";
 import { getCurrencies } from "./api/exchanges";
@@ -12,6 +12,7 @@ const App = () => {
 	const [toCurrency, setToCurrency] = useState<string>("UAH");
 	const [exchangeRate, setExchangeRate] = useState<number>(0);
 	const [amount, setAmount] = useState<number>(1);
+	const [error, setError] = useState<string>("");
 	const [amountInFromCurrency, setAmountInFromCurrency] = useState<boolean>(true);
 
 	let toAmount: number;
@@ -38,7 +39,7 @@ const App = () => {
 				setToCurrency(uah);
 				setExchangeRate(data.rates[uah]);
 			} catch (e) {
-				console.error(e);
+				setError(e as string);
 			}
 		};
 
@@ -53,7 +54,7 @@ const App = () => {
 
 					setExchangeRate(data.rates[toCurrency]);
 				} catch (e) {
-					console.error(e);
+					setError(e as string);
 				}
 			};
 
@@ -62,13 +63,15 @@ const App = () => {
 	}, [fromCurrency, toCurrency]);
 
 	const handleFromAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setAmount(Number(e.target.value));
+		// @ts-ignore
+		setAmount(e.target.value);
 
 		setAmountInFromCurrency(true);
 	};
 
 	const handleToAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setAmount(Number(e.target.value));
+		// @ts-ignore
+		setAmount(e.target.value);
 
 		setAmountInFromCurrency(false);
 	};
@@ -83,13 +86,19 @@ const App = () => {
 
 	return (
 		<>
-			<Header />
+			<Header error={error} setError={setError} />
+
 			<Box
 				sx={{
 					maxWidth: 900,
 					m: "50px auto",
 				}}
 			>
+				{error && (
+					<Typography variant="h2" sx={{ color: "red", mb: "50px", fontSize: "30px" }}>
+						{error}
+					</Typography>
+				)}
 				<CurrencyItem
 					selectedCurrency={fromCurrency}
 					onChangeCurrency={handleFromCurrencyChange}

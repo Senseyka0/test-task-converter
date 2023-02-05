@@ -6,7 +6,13 @@ import Typography from "@mui/material/Typography";
 
 import { getCurrencies } from "../../api/exchanges";
 
-export const Header = memo(() => {
+interface HeaderProps {
+	error: string;
+	setError: (erorr: string) => void;
+}
+
+export const Header = memo((props: HeaderProps) => {
+	const { error, setError } = props;
 	const [eur, setEur] = useState<number>(0);
 	const [usd, setUsd] = useState<number>(0);
 
@@ -19,7 +25,7 @@ export const Header = memo(() => {
 				setEur(Object.values(eur.rates)[0]);
 				setUsd(Object.values(usd.rates)[0]);
 			} catch (e) {
-				console.error(e);
+				setError(e as string);
 			}
 		};
 
@@ -27,28 +33,37 @@ export const Header = memo(() => {
 	}, []);
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static" sx={{ mb: "30px" }}>
-				<Toolbar>
-					<Box
-						sx={{
-							width: "100%",
-							display: "flex",
-							justifyContent: "space-between",
-							alignItems: "center",
-						}}
-					>
-						<Typography variant="h6" component="div">
-							React Convertor
-						</Typography>
+		<>
+			<Box sx={{ flexGrow: 1 }}>
+				<AppBar position="static" sx={{ mb: "30px" }}>
+					<Toolbar>
+						<Box
+							sx={{
+								width: "100%",
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
+						>
+							<Typography variant="h6" component="div">
+								React Convertor
+							</Typography>
 
-						<Typography variant="h6" component="div">
-							<Box>Euro: {eur.toFixed(2)}</Box>
-							Dollar: {usd.toFixed(2)}
-						</Typography>
-					</Box>
-				</Toolbar>
-			</AppBar>
-		</Box>
+							<Typography variant="h6" component="div">
+								<Box>Euro: {eur.toFixed(2)}</Box>
+								Dollar: {usd.toFixed(2)}
+							</Typography>
+						</Box>
+					</Toolbar>
+				</AppBar>
+			</Box>
+			<Box sx={{ maxWidth: "900px", m: "0 auto" }}>
+				{error && (
+					<Typography variant="h2" sx={{ color: "red", mb: "50px", fontSize: "30px" }}>
+						{error}
+					</Typography>
+				)}
+			</Box>
+		</>
 	);
 });
